@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+    <title>{% block title %} Recipes searcher {% endblock %}</title>
+</head>
+
+<body>
+
+    {% block body %}
+    <form action="/recipes">
+        <div class="input-group mb-3" style="max-width: 50%;">
+            <input type="text" class="form-control" placeholder="Apple, flour, sugar" aria-label="ingredients"
+                aria-describedby="button-addon2" name="ingredients">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+            </div>
+        </div>
+    </form>
+    <h2><a href="/" style="text-decoration: none; color:red"> Recipes for you: </a></h2>
+    <div class="container-fluid" style="display:flex;flex-wrap:wrap;">
+        {% for recipe in recipes['hits'] %}
+        <div class="card" style="min-width: 18rem;display:flex;flex:1;">
+            <img class="card-img-top" src="{{recipe['recipe']['image']}}" alt="{{recipe['recipe']['label']}}">
+            <div class="card-body">
+                <h5 class="card-title"><a href="{{recipe['recipe']['url']}}">{{
+                        recipe['recipe']['label']}}</a>
+                </h5>
+                <p class="card-text">Ingredients==><br>
+                    Servings:{{recipe['recipe']['yield']}}<br>
+                    Total Calories:{{recipe['recipe']['calories']}}<br>
+                    Health Labels:{{recipe['recipe']['healthLabels'][:2]}}<br></p>
+            </div>
+            <ul class="list-group list-group-flush" style="max-height:300px;margin-bottom:10px;overflow:scroll;">
+                {% for ing in recipe['recipe']['ingredients'] %}
+                <li>
+                    {{ing['text']}}<br>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+
+    </div>
+    {% endblock %}
+</body>
+
+</html>
